@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 require("dotenv").config();
 const userRouter = require('./routes/userRoutes')
+const postRouter = require('./routes/postRoutes')
 const app = express();
 app.use(express.json());
 
@@ -17,5 +18,6 @@ mongoose.connection.on("connected", () => {
 
 
 app.use("/api/user",userRouter)
+app.use("/api/posts",postRouter)
 
 app.listen(process.env.PORT, () => console.log(`Listening on port ${process.env.PORT}!`));
