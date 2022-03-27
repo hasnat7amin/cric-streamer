@@ -20,4 +20,7 @@ mongoose.connection.on("connected", () => {
 app.use("/api/user",userRouter)
 app.use("/api/posts",postRouter)
 
+app.get("/",(req,res)=>{
+    res.send("Welcome to Cric Streamer Backend App.")
+})
 app.listen(process.env.PORT, () => console.log(`Listening on port ${process.env.PORT}!`));
