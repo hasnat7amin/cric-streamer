@@ -1,10 +1,12 @@
 const express = require("express");
 const mongoose = require("mongoose");
 require("dotenv").config();
+
 const userRouter = require('./routes/userRoutes')
 const postRouter = require('./routes/postRoutes')
 const playerRouter = require('./routes/playerRoutes')
 const matchRouter = require('./routes/matchRoutes')
+const scoreCardRouter = require('./routes/scoreCardRoutes')
 
 const app = express();
 app.use(express.json());
@@ -24,6 +26,8 @@ app.use("/api/user",userRouter)
 app.use("/api/posts",postRouter)
 app.use("/api/player", playerRouter);
 app.use("/api/match", matchRouter);
+app.use("/api/scoreCard", scoreCardRouter)
+
 app.get("/",(req,res)=>{
     res.send("Welcome to Cric Streamer Backend App.")
 })
