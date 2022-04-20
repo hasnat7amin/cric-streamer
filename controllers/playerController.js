@@ -26,6 +26,31 @@ exports.getPlayers = async (req, res) => {
   }
 };
 
+// create a controller for create player
+// @route POST api/player
+// @desc create player
+// @access Private
+exports.createPlayer = async (req, res) => {
+  try {
+    const validatedUser = VerifyToken(req, res);
+    if (!validatedUser) {
+      return res.status(400).json({
+        status: false,
+        message: "User not found",
+      });
+    }
+    const player = await Player.create(req.body);
+    return res.status(200).json({
+      status: true,
+      message: "Player created successfully",
+      player: player,
+    });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send(err);
+  }
+};
+
 // create a controller for get player by id
 // @route GET api/player/id
 // @desc get player by id
