@@ -1,4 +1,4 @@
-// create the route for posts
+// create the route for players
 
 const router = require("express").Router();
 const {
