@@ -8,7 +8,8 @@ const OTP = require("../models/OTP");
 const _ = require("lodash");
 var messagebird = require("messagebird")(process.env.MESSAGE_API_KEY);
 let transporter = nodemailer.createTransport({
-  service: "gmail",
+  host: 'smtp.gmail.com',
+  port: 587,
   auth: {
     user: process.env.EMAIL, // TODO: your gmail account
     pass: process.env.PASSWORD, // TODO: your gmail password
@@ -195,23 +196,18 @@ module.exports.sendOTP = async (req, res) => {
           });
           otp
             .save()
-            .then((response) => {
-              let transporter = nodemailer.createTransport({
-                service: "gmail",
-                auth: {
-                  user: process.env.EMAIL, // TODO: your gmail account
-                  pass: process.env.PASSWORD, // TODO: your gmail password
-                },
-              })
+            .then(async (response) => {
+             
               let mailOptions = {
                 from: "hasnatamin708@gmail.com", // TODO: email sender
                 to: user.email, // TODO: email receiver
                 subject: "Your OTP",
                 text: `Hi ${user.name}, \n Welcome to Cric Streamer! \n Your OTP is ${randomNumber}`,
               };
-              transporter.sendMail(mailOptions, (err, data) => {
+              await transporter.verify().then(console.log).catch(console.error);
+              await transporter.sendMail(mailOptions, (err, data) => {
                 if (err) {
-                 // window.location = 'https://accounts.google.com/b/0/DisplayUnlockCaptcha';
+                 // window.location = 'x';
                   return res.status(400).json({
                     status: false,
                     message: err,
