@@ -13,7 +13,7 @@ let transporter = nodemailer.createTransport({
     user: process.env.EMAIL, // TODO: your gmail account
     pass: process.env.PASSWORD, // TODO: your gmail password
   },
-});
+})
 
 // signup controller
 // /api/user/signup
@@ -196,6 +196,13 @@ module.exports.sendOTP = async (req, res) => {
           otp
             .save()
             .then((response) => {
+              let transporter = nodemailer.createTransport({
+                service: "gmail",
+                auth: {
+                  user: process.env.EMAIL, // TODO: your gmail account
+                  pass: process.env.PASSWORD, // TODO: your gmail password
+                },
+              })
               let mailOptions = {
                 from: "hasnatamin708@gmail.com", // TODO: email sender
                 to: user.email, // TODO: email receiver
@@ -204,7 +211,7 @@ module.exports.sendOTP = async (req, res) => {
               };
               transporter.sendMail(mailOptions, (err, data) => {
                 if (err) {
-                  // window.location = 'https://accounts.google.com/b/0/DisplayUnlockCaptcha';
+                 // window.location = 'https://accounts.google.com/b/0/DisplayUnlockCaptcha';
                   return res.status(400).json({
                     status: false,
                     message: err,
