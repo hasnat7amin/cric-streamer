@@ -17,6 +17,7 @@ mongoose.connect(process.env.DB_CONNECTION, {
     }
 );
 
+// djaskf
 mongoose.connection.on("connected", () => {
     console.log("Connected to database");
 });
