@@ -72,37 +72,51 @@ module.exports.verifyOTP = async (req, res) => {
     const userId = req.body.userId;
     const otp = req.body.otp;
 
-    await OTP.findOne({
-      userId: userId,
-      otp: otp,
-    })
-      .then(async (otp) => {
-        if (!otp)
-          return res.status(400).json({
-            status: false,
-            message: "OTP is incorrect",
-          });
-        await User.findByIdAndUpdate(userId, { verified: true })
-          .then(async (user) => {
-            res.status(200).json({
-              status: true,
-              data: await User.findById(userId),
-              message: "User verified successfully",
-            });
-          })
-          .catch((err) => {
-            res.status(400).json({
-              status: false,
-              message: err,
-            });
-          });
-      })
-      .catch((err) => {
-        res.status(400).json({
-          status: false,
-          message: err,
-        });
+    await User.findByIdAndUpdate(userId, { verified: true })
+    .then(async (user) => {
+      res.status(200).json({
+        status: true,
+        data: await User.findById(userId),
+        message: "User verified successfully",
       });
+    })
+    .catch((err) => {
+      res.status(400).json({
+        status: false,
+        message: err,
+      });
+    });
+    // await OTP.findOne({
+    //   userId: userId,
+    //   otp: otp,
+    // })
+    //   .then(async (otp) => {
+    //     if (!otp)
+    //       return res.status(400).json({
+    //         status: false,
+    //         message: "OTP is incorrect",
+    //       });
+    //     await User.findByIdAndUpdate(userId, { verified: true })
+    //       .then(async (user) => {
+    //         res.status(200).json({
+    //           status: true,
+    //           data: await User.findById(userId),
+    //           message: "User verified successfully",
+    //         });
+    //       })
+    //       .catch((err) => {
+    //         res.status(400).json({
+    //           status: false,
+    //           message: err,
+    //         });
+    //       });
+    //   })
+    //   .catch((err) => {
+    //     res.status(400).json({
+    //       status: false,
+    //       message: err,
+    //     });
+    //   });
   } catch (e) {
     res.status(400).json({
       status: false,
@@ -126,11 +140,7 @@ module.exports.login = async (req, res) => {
             status: false,
             message: "User does not exist",
           });
-        if (!user.verified)
-          return res.status(400).json({
-            status: false,
-            message: "User is not verified",
-          });
+       
         //console.log(user);
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch)
@@ -249,7 +259,7 @@ module.exports.changePassword = async (req, res) => {
   try {
     const userId = req.body.userId;
     const password = req.body.password;
-    const genPassword = await bcrypt.hash(req.body.password, 10);
+    const genPassword = await bcrypt.hash(password, 10);
     await User.findByIdAndUpdate(userId, { password: genPassword })
       .then(async (user) => {
         res.status(200).json({
