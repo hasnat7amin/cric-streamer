@@ -132,14 +132,20 @@ exports.updatePost = async (req, res) => {
         message: "User not found",
       });
     }
-    const post = await Post.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-    }).where({ user: validatedUser._id });
-    res.status(200).json({
-      status: true,
-      data: post,
-      message: "Post updated successfully",
-    });
+    //const post = await Post.findByIdAndUpdate(req.params.id, req.body).where({ user: validatedUser._id });
+    await Post.findByIdAndUpdate(req.params.id, {
+      text: req.body.text,
+      avatar: req.body.avatar,
+    })
+      .where({ user: validatedUser._id })
+      .then(async (post) => {
+
+        res.status(200).json({
+          status: true,
+          data: await Post.findById(req.params.id).where({ user: validatedUser._id }),
+          message: "Post updated successfully",
+        });
+      });
   } catch (e) {
     res.status(400).json({
       status: false,
