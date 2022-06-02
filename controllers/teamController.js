@@ -14,7 +14,7 @@ exports.getTeams = async (req, res) => {
         message: "User not found",
       });
     }
-    const teams = await Team.find({});
+    const teams = await Team.find({}).populate("players").populate("teamOwner").populate("teamCaptain");
     return res.status(200).json({
       status: true,
       message: "Teams fetched successfully",
@@ -39,7 +39,7 @@ exports.getTeamById = async (req, res) => {
         message: "User not found",
       });
     }
-    const team = await Team.findById(req.params.id);
+    const team = await Team.findById(req.params.id).populate("players").populate("teamOwner").populate("teamCaptain");
     if (!team) {
       return res.status(400).json({
         status: false,

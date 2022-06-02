@@ -11,19 +11,20 @@ const TeamSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: [true, "Enter team owner"]
-    },
+    }, 
     teamCaptain:{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Player',
         required: [true, "Enter team captain"]
     },
-    city: {
+    slogan: {
         type: String,
-        required: [true, "Enter team country"],
+        required: [true, "Enter team slogan"],
     },
     players: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Player'
+        ref: 'Player',
+        required: [true, "Enter team Players"],
     }],
     rating: {
         type: Number,

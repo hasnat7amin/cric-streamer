@@ -7,6 +7,7 @@ const postRouter = require('./routes/postRoutes')
 const playerRouter = require('./routes/playerRoutes')
 const matchRouter = require('./routes/matchRoutes')
 const scoreCardRouter = require('./routes/scoreCardRoutes')
+const teamRouter = require('./routes/teamRoutes')
 
 const app = express();
 app.use(express.json());
@@ -28,6 +29,7 @@ app.use("/api/posts",postRouter)
 app.use("/api/player", playerRouter);
 app.use("/api/match", matchRouter);
 app.use("/api/scoreCard", scoreCardRouter)
+app.use("/api/team", teamRouter);
 
 app.get("/",(req,res)=>{
     res.send("Welcome to Cric Streamer Backend App.")
