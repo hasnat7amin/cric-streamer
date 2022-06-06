@@ -45,38 +45,30 @@ const ScoreCardSchema = new mongoose.Schema({
             },
             videoStartTime: {
                 type: Number,
-                required: [true, "Enter video start time"],
             },
             videoEndTime: {
                 type: Number,
-                required: [true, "Enter video end time"],
             },
             player1ID: {
                 type: mongoose.Schema.Types.ObjectId,
                 ref: 'Player',
-                required: [true, "Enter player1ID"],
             },
             player1Score: { 
                 type: Number,
-                required: [true, "Enter player1Score"],
             },
             player2ID: {
                 type: mongoose.Schema.Types.ObjectId,
                 ref: 'Player',
-                required: [true, "Enter player2ID"],
             },
             player2Score: { 
                 type: Number,
-                required: [true, "Enter player2Score"],
             },
             ballerId:{
                 type: mongoose.Schema.Types.ObjectId,
                 ref: 'Player',
-                required: [true, "Enter bollerId"],
             },
             ballerScore: {
                 type: Number,
-                required: [true, "Enter bollerScore"],
             },
             highlights:{
                 type: Boolean,
@@ -120,38 +112,30 @@ const ScoreCardSchema = new mongoose.Schema({
             },
             videoStartTime: {
                 type: Number,
-                required: [true, "Enter video start time"],
             },
             videoEndTime: {
                 type: Number,
-                required: [true, "Enter video end time"],
             },
             player1ID: {
                 type: mongoose.Schema.Types.ObjectId,
                 ref: 'Player',
-                required: [true, "Enter player1ID"],
             },
             player1Score: { 
                 type: Number,
-                required: [true, "Enter player1Score"],
             },
             player2ID: {
                 type: mongoose.Schema.Types.ObjectId,
                 ref: 'Player',
-                required: [true, "Enter player2ID"],
             },
             player2Score: { 
                 type: Number,
-                required: [true, "Enter player2Score"],
             },
             ballerId:{
                 type: mongoose.Schema.Types.ObjectId,
                 ref: 'Player',
-                required: [true, "Enter bollerId"],
             },
             ballerScore: {
                 type: Number,
-                required: [true, "Enter bollerScore"],
             },
             highlights:{
                 type: Boolean,

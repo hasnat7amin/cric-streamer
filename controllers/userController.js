@@ -10,6 +10,7 @@ var messagebird = require("messagebird")(process.env.MESSAGE_API_KEY);
 let transporter = nodemailer.createTransport({
   host: 'smtp.gmail.com',
   port: 587,
+  secure: false,
   auth: {
     user: process.env.EMAIL, // TODO: your gmail account
     pass: process.env.PASSWORD, // TODO: your gmail password
@@ -202,7 +203,7 @@ module.exports.sendOTP = async (req, res) => {
 
           const otp = new OTP({
             otp: randomNumber,
-            userId: user._id,
+            userId: req.body.id,
           });
           otp
             .save()
@@ -274,6 +275,64 @@ module.exports.changePassword = async (req, res) => {
           message: err,
         });
       });
+  } catch (e) {
+    res.status(400).json({
+      status: false,
+      message: e,
+    });
+  }
+};
+
+
+// create the controller for verify email
+// /api/user/verifyEmail
+module.exports.verifyEmail = async (req, res) => {  
+  try {
+    const email = req.body.email;
+    await User.findOne({email:email})
+      .then(async (user) => {
+        res.status(200).json({
+          status: true,
+          data: user,
+          message: "Email Verify successfully ",
+        });
+      })
+      .catch((err) => {
+        res.status(400).json({
+          status: false,
+          message: err,
+        });
+      });
+    } catch (e) {
+      res.status(400).json({
+        status: false,
+        message: e,
+      });
+    }
+  };
+
+
+// create the controller for reset password
+// /api/user/resetPassword
+module.exports.resetPassword = async (req, res) => {
+  try {
+    const email = req.body.email;
+    const password = req.body.password;
+    const genPassword = await bcrypt.hash(password, 10);
+    await User.findOneAndUpdate({email:email}, {password:genPassword})
+      .then(async (user) => {
+      res.status(200).json({
+        status: true,
+        data: user,
+        message: "Email Verify successfully ",
+      });
+    })
+    .catch((err) => {
+      res.status(400).json({
+        status: false,
+        message: err,
+      });
+    });
   } catch (e) {
     res.status(400).json({
       status: false,
