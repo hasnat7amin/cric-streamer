@@ -8,7 +8,6 @@ const Team = require("../models/Team");
 const Match = require("../models/Match");
 const ScoreCard = require("../models/ScoreCard");
 const VerifyToken = require("../validation/verifyToken");
-
 // @route   GET api/posts
 // @desc    Get all posts
 // @access  Private
@@ -70,7 +69,7 @@ exports.getPostById = async (req, res) => {
 // @route   POST api/posts
 // @desc    Create post
 // @access  Private
-exports.createPost = async (req, res) => {
+exports.createPost = async (req, res,next) => {
   try {
     const validatedUser = await VerifyToken(req, res).then(async (user) => {
       if (!user) {
@@ -88,7 +87,8 @@ exports.createPost = async (req, res) => {
       });
     }
     const user = validatedUser._id;
-    const { text, avatar, video } = req.body;
+    const { text, video } = req.body;
+    const avatar = req.file.path;
 
     const newPost = new Post({
       text,
@@ -123,7 +123,7 @@ exports.updatePost = async (req, res) => {
           status: false,
           message: "User not found",
         });
-      }
+      } 
       return user;
     });
     if (!validatedUser) {
@@ -132,17 +132,19 @@ exports.updatePost = async (req, res) => {
         message: "User not found",
       });
     }
+    
     //const post = await Post.findByIdAndUpdate(req.params.id, req.body).where({ user: validatedUser._id });
     await Post.findByIdAndUpdate(req.params.id, {
       text: req.body.text,
-      avatar: req.body.avatar,
+      avatar: req.file.path,
     })
       .where({ user: validatedUser._id })
       .then(async (post) => {
-
         res.status(200).json({
           status: true,
-          data: await Post.findById(req.params.id).where({ user: validatedUser._id }),
+          data: await Post.findById(req.params.id).where({
+            user: validatedUser._id,
+          }),
           message: "Post updated successfully",
         });
       });

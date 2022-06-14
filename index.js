@@ -11,6 +11,8 @@ const teamRouter = require('./routes/teamRoutes')
 const YouTubeRouter = require('./routes/YouTubeRoutes');
 
 const app = express();
+
+app.use("/uploads", express.static("uploads"))
 app.use(express.json());
 
 mongoose.connect(process.env.DB_CONNECTION, {
