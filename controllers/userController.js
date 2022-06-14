@@ -8,14 +8,14 @@ const OTP = require("../models/OTP");
 const _ = require("lodash");
 var messagebird = require("messagebird")(process.env.MESSAGE_API_KEY);
 let transporter = nodemailer.createTransport({
-  host: 'smtp.gmail.com',
+  host: "smtp.gmail.com",
   port: 587,
   secure: false,
   auth: {
     user: process.env.EMAIL, // TODO: your gmail account
     pass: process.env.PASSWORD, // TODO: your gmail password
   },
-})
+});
 
 // signup controller
 // /api/user/signup
@@ -74,19 +74,19 @@ module.exports.verifyOTP = async (req, res) => {
     const otp = req.body.otp;
 
     await User.findByIdAndUpdate(userId, { verified: true })
-    .then(async (user) => {
-      res.status(200).json({
-        status: true,
-        data: await User.findById(userId),
-        message: "User verified successfully",
+      .then(async (user) => {
+        res.status(200).json({
+          status: true,
+          data: await User.findById(userId),
+          message: "User verified successfully",
+        });
+      })
+      .catch((err) => {
+        res.status(400).json({
+          status: false,
+          message: err,
+        });
       });
-    })
-    .catch((err) => {
-      res.status(400).json({
-        status: false,
-        message: err,
-      });
-    });
     // await OTP.findOne({
     //   userId: userId,
     //   otp: otp,
@@ -141,7 +141,7 @@ module.exports.login = async (req, res) => {
             status: false,
             message: "User does not exist",
           });
-       
+
         //console.log(user);
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch)
@@ -208,7 +208,6 @@ module.exports.sendOTP = async (req, res) => {
           otp
             .save()
             .then(async (response) => {
-             
               let mailOptions = {
                 from: "hasnatamin708@gmail.com", // TODO: email sender
                 to: user.email, // TODO: email receiver
@@ -218,7 +217,7 @@ module.exports.sendOTP = async (req, res) => {
               await transporter.verify().then(console.log).catch(console.error);
               await transporter.sendMail(mailOptions, (err, data) => {
                 if (err) {
-                 // window.location = 'x';
+                  // window.location = 'x';
                   return res.status(400).json({
                     status: false,
                     message: err,
@@ -283,19 +282,25 @@ module.exports.changePassword = async (req, res) => {
   }
 };
 
-
 // create the controller for verify email
 // /api/user/verifyEmail
-module.exports.verifyEmail = async (req, res) => {  
+module.exports.verifyEmail = async (req, res) => {
   try {
     const email = req.body.email;
-    await User.findOne({email:email})
+    await User.findOne({ email: email })
       .then(async (user) => {
-        res.status(200).json({
-          status: true,
-          data: user,
-          message: "Email Verify successfully ",
-        });
+        if (user) {
+          res.status(200).json({
+            status: true,
+            data: user,
+            message: "Email Verify successfully ",
+          });
+        } else {
+          res.status(400).json({
+            status: false,
+            message: "Email does not exist",
+          });
+        }
       })
       .catch((err) => {
         res.status(400).json({
@@ -303,14 +308,13 @@ module.exports.verifyEmail = async (req, res) => {
           message: err,
         });
       });
-    } catch (e) {
-      res.status(400).json({
-        status: false,
-        message: e,
-      });
-    }
-  };
-
+  } catch (e) {
+    res.status(400).json({
+      status: false,
+      message: e,
+    });
+  }
+};
 
 // create the controller for reset password
 // /api/user/resetPassword
@@ -319,20 +323,27 @@ module.exports.resetPassword = async (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
     const genPassword = await bcrypt.hash(password, 10);
-    await User.findOneAndUpdate({email:email}, {password:genPassword})
+    await User.findOneAndUpdate({ email: email }, { password: genPassword })
       .then(async (user) => {
-      res.status(200).json({
-        status: true,
-        data: user,
-        message: "Email Verify successfully ",
+        if (user) {
+          res.status(200).json({
+            status: true, 
+            data: user,
+            message: "Email Verify successfully ",
+          });
+        } else {
+          res.status(400).json({
+            status: false,
+            message: "Email does not match!",
+          });
+        }
+      })
+      .catch((err) => {
+        res.status(400).json({
+          status: false,
+          message: err,
+        });
       });
-    })
-    .catch((err) => {
-      res.status(400).json({
-        status: false,
-        message: err,
-      });
-    });
   } catch (e) {
     res.status(400).json({
       status: false,
