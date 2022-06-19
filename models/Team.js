@@ -7,24 +7,31 @@ const TeamSchema = new mongoose.Schema({
         type: String,
         required: [true, "Enter team name"],
     },
+    image: {
+        type: String,
+        required: [true, "Enter team image"],
+    },
+    logo:{
+        type: String,
+    },
     teamOwner:{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        required: [true, "Enter team owner"]
+        type: String,
+        // type: mongoose.Schema.Types.ObjectId,
+        // ref: 'User',
+        // required: [true, "Enter team owner"]
     }, 
     teamCaptain:{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Player',
-        required: [true, "Enter team captain"]
+        type: String,
+        // type: mongoose.Schema.Types.ObjectId,
+        // ref: 'Player',
+        // required: [true, "Enter team captain"]
     },
     slogan: {
         type: String,
-        required: [true, "Enter team slogan"],
     },
     players: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Player',
-        required: [true, "Enter team Players"],
     }],
     rating: {
         type: Number,
