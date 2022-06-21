@@ -55,7 +55,10 @@ exports.createPlayer = async (req, res) => {
     });
   } catch (err) {
     console.error(err.message);
-    res.status(500).send(err);
+    res.status(500).json({
+      status: false,
+      message: err,
+    });
   }
 };
 
