@@ -7,7 +7,7 @@ const PlayerSchema = new mongoose.Schema(
       type: String,
       required: [true, "Enter player name"],
     },
-    cinc: {
+    cnic: {
       type: String,
       required: [true, "Enter player cnic"],
     },

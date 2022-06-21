@@ -39,7 +39,7 @@ exports.createPlayer = async (req, res) => {
         message: "User not found",
       });
     }
-    const isExist = await Player.findOne({ cinc: req.body.cinc });
+    const isExist = await Player.findOne({ cnic: req.body.cnic });
     if (isExist) {
       return  res.status(200).json({
         status: true,
