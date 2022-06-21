@@ -7,6 +7,14 @@ const PlayerSchema = new mongoose.Schema(
       type: String,
       required: [true, "Enter player name"],
     },
+    cinc: {
+      type: String,
+      required: [true, "Enter player cnic"],
+    },
+    role:{
+      type: String,
+      required: [true, "Enter player role"],
+    },
     score: {
       type: Number,
       default: 0,
@@ -29,7 +37,6 @@ const PlayerSchema = new mongoose.Schema(
     },
     city: {
       type: String,
-      required: [true, "Enter player city"],
     },
     rating: {
       type: Number,
