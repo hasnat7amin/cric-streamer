@@ -40,11 +40,12 @@ exports.createPlayer = async (req, res) => {
       });
     }
     const isExist = await Player.findOne({ cnic: req.body.cnic });
+    //console.log(isExist);
     if (isExist) {
       return  res.status(200).json({
         status: true,
         message: "Player already created successfully",
-        player: player,
+        player: isExist,
       });
     }
     const player = await Player.create(req.body);
@@ -54,10 +55,9 @@ exports.createPlayer = async (req, res) => {
       player: player,
     });
   } catch (err) {
-    console.error(err.message);
     res.status(500).json({
       status: false,
-      message: err,
+      message: err.message,
     });
   }
 };
