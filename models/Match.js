@@ -29,7 +29,7 @@ const MatchSchema = new mongoose.Schema({
     winner: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Team',
-        required: [true, "Enter winner"]
+        //required: [true, "Enter winner"]
     },
     matchDate: {
         type: Date,

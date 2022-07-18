@@ -39,6 +39,12 @@ exports.createPlayer = async (req, res) => {
         message: "User not found",
       });
     }
+    if(!req.body.cnic){
+      return res.status(400).json({
+        status: false,
+        message: "Please enter cnic",
+      });
+    }
     const isExist = await Player.findOne({ cnic: req.body.cnic });
     //console.log(isExist);
     if (isExist) {
@@ -46,6 +52,12 @@ exports.createPlayer = async (req, res) => {
         status: true,
         message: "Player already created successfully",
         player: isExist,
+      });
+    }
+    if(!req.body.name || !req.body.role || !req.body.cnic){
+      return res.status(400).json({
+        status: false,
+        message: "Player name, role and cnic are required",
       });
     }
     const player = await Player.create(req.body);

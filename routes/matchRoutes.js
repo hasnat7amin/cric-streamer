@@ -15,4 +15,4 @@ router.route("/:id").get(getMatchById);
 router.route("/:id").put(updateMatch);
 router.route("/:id").delete(deleteMatch);
 
-module.exports = router;
+module.exports = router; 

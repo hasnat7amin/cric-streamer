@@ -86,6 +86,12 @@ exports.createPost = async (req, res,next) => {
         message: "User not found",
       });
     }
+    if(!req.body.text || !req.body.avatar  || req.body.user){
+      return res.status(400).json({
+        status: false,
+        message: "Post text, avatar and user are required",
+      });
+    }
     const user = validatedUser._id;
     const { text, video } = req.body;
     const avatar = req.file.path;
@@ -214,6 +220,12 @@ exports.createComment = async (req, res) => {
     }
     const user = validatedUser._id;
     //console.log(user)
+    if(!req.body.text){
+      return res.status(400).json({
+        status: false,
+        message: "Comment text is required",
+      });
+    }
     const { text } = req.body;
     const post = await Post.findById(req.params.id);
     const newComment = new CommentPost({
@@ -257,7 +269,14 @@ exports.createLike = async (req, res) => {
       });
     }
     const user = validatedUser._id;
+    if(!req.body.reaction){
+      return res.status(400).json({
+        status: false,
+        message: "Reaction is required",
+      });
+    }
     const { reaction } = req.body;
+
     const post = await Post.findById(req.params.id);
     const newLike = new LikePost({
       user,

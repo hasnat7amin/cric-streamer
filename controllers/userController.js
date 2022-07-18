@@ -21,6 +21,12 @@ let transporter = nodemailer.createTransport({
 // /api/user/signup
 module.exports.signUp = async (req, res) => {
   try {
+    if(!req.body.name || !req.body.email || !req.body.password){
+      return res.status(400).json({
+        status: false,
+        message: "User Name Email and Password are required"
+      })
+    }
     User.findOne({
       email: req.body.email,
     })
@@ -130,6 +136,12 @@ module.exports.verifyOTP = async (req, res) => {
 // /api/user/login
 module.exports.login = async (req, res) => {
   try {
+    if(!req.body.email || !req.body.password){
+      return res.status(400).json({
+        status: false,
+        message: "User Email and Password are required"
+      })
+    }
     const email = req.body.email;
     const password = req.body.password;
     await User.findOne({
@@ -257,6 +269,12 @@ module.exports.sendOTP = async (req, res) => {
 // /api/user/changePassword
 module.exports.changePassword = async (req, res) => {
   try {
+    if(!req.body.userId || !req.body.password){
+      return res.status(400).json({
+        status: false,
+        message: "User Id and Password are required"
+      })
+    }
     const userId = req.body.userId;
     const password = req.body.password;
     const genPassword = await bcrypt.hash(password, 10);
@@ -286,6 +304,12 @@ module.exports.changePassword = async (req, res) => {
 // /api/user/verifyEmail
 module.exports.verifyEmail = async (req, res) => {
   try {
+    if(!req.body.email){
+      return res.status(400).json({
+        status: false,
+        message: "Email is required"
+      })
+    }
     const email = req.body.email;
     await User.findOne({ email: email })
       .then(async (user) => {
@@ -320,6 +344,12 @@ module.exports.verifyEmail = async (req, res) => {
 // /api/user/resetPassword
 module.exports.resetPassword = async (req, res) => {
   try {
+    if(!req.body.email || !req.body.password){
+      return res.status(400).json({
+        status: false,
+        message: "Email and Password are required"
+      })
+    }
     const email = req.body.email;
     const password = req.body.password;
     const genPassword = await bcrypt.hash(password, 10);

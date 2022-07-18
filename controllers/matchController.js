@@ -67,6 +67,12 @@ exports.getMatchById = async (req, res) => {
 // @access Private
 exports.createMatch = async (req, res) => {
   try {
+    if(!req.body.team1 || !req.body.team2 || !req.body.location || !req.body.scoreCard || !req.body.userId){
+      return res.status(400).json({
+        status: false,
+        message: "Match team1, team2, location, scoreCard and userId are required"
+      });
+    }
     const validatedUser = VerifyToken(req, res);
     if (!validatedUser) {
       return res.status(400).json({

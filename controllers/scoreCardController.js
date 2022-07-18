@@ -77,6 +77,12 @@ exports.createScoreCard = async (req, res) => {
             message: "User not found",
         });
         }
+        if(!req.body.matchId || !req.body.userId || !req.body.matchVideo){
+            return res.status(400).json({
+                status: false,
+                message: "Please fill all the fields",
+            });
+        }
         const scoreCard = await ScoreCard.create(req.body);
         return res.status(200).json({
             status: true,
