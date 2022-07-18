@@ -5,6 +5,12 @@ const YouTubeStreaming = require("../models/YouTubeModel");
 // @access  Public
 module.exports.PostVideo = async (req, res) => {
   try {
+    if(!req.body.videoID) {
+      return res.status(400).json({
+        status: false,
+        message: "Video ID is required"
+      });
+    }
     const videoID = req.body.videoID;
     const youtubeStreaming = new YouTubeStreaming({ videoID: videoID });
     await youtubeStreaming
