@@ -8,19 +8,27 @@ const youTubeStreamingSchema = new mongoose.Schema({
     type: String,
     required: [true,"Enter the video ID"],
   },
- 
-//   likes: [
-//     {
-//       type: mongoose.Schema.Types.ObjectId,
-//       ref: "Like",
-//     },
-//   ],
-//   comments: [
-//     {
-//       type: mongoose.Schema.Types.ObjectId,
-//       ref: "CommentPost",
-//     },
-//   ],
+  isStreaming:{
+    type: Boolean,
+    required: true,
+  },
+  scoreCard:{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "ScoreCard"
+  },
+  
+  likes: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Like",
+    },
+  ],
+  comments: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "CommentPost",
+    },
+  ],
   date: {
     type: Date,
     default: Date.now,
