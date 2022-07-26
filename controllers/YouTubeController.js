@@ -104,3 +104,65 @@ module.exports.GetUploadedVideos = async (req, res) => {
     });
   }
 };
+
+
+// creating the controller for updating the liveStreaming
+// @route PUT api/youtube/updateStreaming
+// @desc   update the post
+// @access Public
+module.exports.UpdateStreaming = async (req, res) => {
+  try {
+    await YouTubeStreaming.findOneAndUpdate(
+      { id: req.body.id },
+      { $set: req.body },
+      { new: true }
+    )
+      .then((result) => {
+        return res.status(200).json({
+          status: true,
+          data: result,
+          message: "update successfully",
+        });
+      })
+      .catch((e) => {
+        res.status(400).json({
+          status: false,
+          message: e,
+        });
+      });
+  } catch (e) {
+    res.status(400).json({
+      status: false,
+      message: e,
+    });
+  }
+}
+
+// creating the controller for deleting the livesStreaming
+// @route   DELETE api/youtube/deleteStreaming
+// @desc   delete the post
+// @access Public
+module.exports.DeleteStreaming = async (req, res) => {
+  try {
+    await YouTubeStreaming.findOneAndDelete({ id: req.body.id })
+      .then((result) => {
+        return res.status(200).json({
+          status: true,
+          data: result,
+          message: "delete successfully",
+        });
+      })
+      .catch((e) => {
+        res.status(400).json({
+          status: false,
+          message: e,
+        });
+      });
+  } catch (e) {
+    res.status(400).json({
+      status: false,
+      message: e,
+    });
+  }
+}
+
