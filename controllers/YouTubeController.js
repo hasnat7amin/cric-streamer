@@ -112,6 +112,12 @@ module.exports.GetUploadedVideos = async (req, res) => {
 // @access Public
 module.exports.UpdateStreaming = async (req, res) => {
   try {
+    if(!req.body.id){
+      return res.status(200).json({
+        status: false,
+        message: "please enter the id",
+      });
+    }
     await YouTubeStreaming.findOneAndUpdate(
       { id: req.body.id },
       { $set: req.body },
@@ -144,6 +150,12 @@ module.exports.UpdateStreaming = async (req, res) => {
 // @access Public
 module.exports.DeleteStreaming = async (req, res) => {
   try {
+    if(!req.body.id){
+      return res.status(200).json({
+        status: false,
+        message: "please enter the id",
+      });
+    }
     await YouTubeStreaming.findOneAndDelete({ id: req.body.id })
       .then((result) => {
         return res.status(200).json({
