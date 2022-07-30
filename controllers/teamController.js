@@ -174,10 +174,10 @@ exports.createTeam = async (req, res) => {
     return res.status(200).json({
       status: true,
       message: "Team created successfully",
-      team: await Team.findById(team._id) 
+      team: await Team.findById(team._id)
         .populate("image")
         .populate("logo")
-        .populate("players")
+        .populate("players"),
     });
   } catch (err) {
     return res.status(400).json({
