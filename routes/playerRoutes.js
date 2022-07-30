@@ -6,7 +6,9 @@ const {
     getPlayerById,
     updatePlayerById,
     deletePlayerById,
-    createPlayer
+    createPlayer,
+    deleteAllPlayers,
+    editPlayerScore
 } = require("../controllers/playerController");
 
 router.route("/").get(getPlayers);
@@ -14,5 +16,6 @@ router.route("/").post(createPlayer);
 router.route("/:id").get(getPlayerById);
 router.route("/:id").put(updatePlayerById);
 router.route("/:id").delete(deletePlayerById);
-
+router.route("/").delete(deleteAllPlayers);
+router.route("/score/:matchId/:teamId/:playerId").put(editPlayerScore); 
 module.exports = router;

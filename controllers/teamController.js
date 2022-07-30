@@ -1,5 +1,35 @@
 const VerifyToken = require("../validation/verifyToken");
 const Team = require("../models/Team");
+const multer = require("multer");
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "./uploads");
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + file.originalname);
+  },
+});
+
+const fileFilter = (req, file, cb) => {
+  if (
+    file.mimetype === "image/jpeg" ||
+    file.mimetype === "image/jpg" ||
+    file.mimetype === "image/png"
+  ) {
+    cb(null, true);
+  } else {
+    cd(null, false);
+  }
+};
+
+const upload = multer({
+  storage: storage,
+  fileFilter: fileFilter,
+  limits: {
+    fileSize: 1024 * 1024 * 1,
+  },
+});
 
 // create the controller for all teams
 // @route GET api/team
@@ -15,9 +45,9 @@ exports.getTeams = async (req, res) => {
       });
     }
     const teams = await Team.find({})
-      .populate("players")
-      .populate("teamOwner")
-      .populate("teamCaptain");
+      .populate("image")
+      .populate("logo")
+      .populate("players");
     return res.status(200).json({
       status: true,
       message: "Teams fetched successfully",
@@ -43,9 +73,9 @@ exports.getTeamById = async (req, res) => {
       });
     }
     const team = await Team.findById(req.params.id)
-      .populate("players")
-      .populate("teamOwner")
-      .populate("teamCaptain");
+      .populate("image")
+      .populate("logo")
+      .populate("players");
     if (!team) {
       return res.status(400).json({
         status: false,
@@ -91,7 +121,10 @@ exports.updateTeamById = async (req, res) => {
     return res.status(200).json({
       status: true,
       message: "Team updated successfully",
-      team: updatedTeam,
+      team: await Team.findById(updatedTeam._id)
+        .populate("image")
+        .populate("logo")
+        .populate("players"),
     });
   } catch (err) {
     return res.status(400).json({
@@ -107,28 +140,30 @@ exports.updateTeamById = async (req, res) => {
 // @access Private
 exports.createTeam = async (req, res) => {
   try {
-    const validatedUser = VerifyToken(req, res);
+    const validatedUser = await VerifyToken(req, res);
+    //console.log("validatedUser",validatedUser);
     if (!validatedUser) {
       return res.status(400).json({
         status: false,
         message: "User not found",
       });
     }
-    if(!req.body.name){
+    if (!req.body.name) {
+      // console.log(req.body.name.toString())
       return res.status(400).json({
         status: false,
         message: "Team name is required",
       });
     }
-    const isExitsTeam = await Team.findOne({name: req.body.name});
-    if(isExitsTeam){
+    const isExitsTeam = await Team.findOne({ name: req.body.name });
+    if (isExitsTeam) {
       return res.status(400).json({
         status: false,
         message: "Team name already exists",
-        team: isExitsTeam
+        team: isExitsTeam,
       });
     }
-    if(!req.body.name || !req.body.image){
+    if (!req.body.name || !req.body.image) {
       return res.status(400).json({
         status: false,
         message: "Team name and image is required",
@@ -139,12 +174,16 @@ exports.createTeam = async (req, res) => {
     return res.status(200).json({
       status: true,
       message: "Team created successfully",
-      team: team,
+      team: await Team.findById(team._id) 
+        .populate("image")
+        .populate("logo")
+        .populate("players")
     });
   } catch (err) {
     return res.status(400).json({
       status: false,
-      message: "User not found",
+      data: err,
+      message: "got some error",
     });
   }
 };
@@ -174,6 +213,34 @@ exports.deleteTeamById = async (req, res) => {
       status: true,
       message: "Team deleted successfully",
     });
+  } catch (err) {
+    return res.status(400).json({
+      status: false,
+      message: "User not found",
+    });
+  }
+};
+
+// create a controller for deleteing all the teams
+// @route DELETE api/team
+// @desc delete all teams
+// @access Public
+exports.deleteAllTeams = async (req, res) => {
+  try {
+    await Team.deleteMany({})
+      .then(() => {
+        return res.status(200).json({
+          status: true,
+          message: "Players deleted successfully",
+        });
+      })
+      .catch((err) => {
+        return res.status(400).json({
+          status: false,
+          error: err,
+          message: "Players not deleted successfully",
+        });
+      });
   } catch (err) {
     return res.status(400).json({
       status: false,

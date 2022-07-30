@@ -12,15 +12,15 @@ const commentPostSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    videoUrl:{
-        type: String,
-        required: false,
-    },
+    // videoUrl:{
+    //     type: String,
+    //     required: false,
+    // },
     
-    avatar: {
-        type: String,
-        required: false,
-    },
+    // avatar: {
+    //     type: String,
+    //     required: false,
+    // },
     date: {
         type: Date,
         default: Date.now,

@@ -30,7 +30,7 @@ const upload = multer({
   limits: {
     fileSize: 1024 * 1024 * 1,
   },
-}).single("avatar");
+}).single("image");
 
 const {
   createPost,
@@ -46,7 +46,7 @@ const {
   updateComment,
 } = require("../controllers/postController");
 
-router.route("/").post(upload, createPost);
+router.route("/").post(createPost);
 router.route("/").get(getPosts);
 router.route("/:id").get(getPostById);
 router.route("/:id").put(updatePost);

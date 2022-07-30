@@ -11,30 +11,38 @@ const PlayerSchema = new mongoose.Schema(
       type: String,
       required: [true, "Enter player cnic"],
     },
-    role:{
+    role: {
       type: String,
       required: [true, "Enter player role"],
     },
-    score: {
-      type: Number,
-      default: 0,
-    },
-    wickets: {
-      type: Number,
-      default: 0,
-    },
-    sixes: {
-      type: Number,
-      default: 0,
-    },
-    fours: {
-      type: Number,
-      default: 0,
-    },
-    balls: {
-      type: Number,
-      default: 0,
-    },
+    playerScoreList: [
+      {
+        matchId: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Match",
+        },
+        teamId: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Team",
+        },
+        playedTotalScore: {
+          type: Number,
+          default: 0,
+        },
+        bolledTotalScore: {
+          type: Number,
+          default: 0,
+        },
+        overs: {
+          type: Number,
+          default: 0,
+        },
+        wickets: {
+          type: Number,
+          default: 0,
+        },
+      },
+    ],
     city: {
       type: String,
     },

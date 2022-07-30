@@ -9,7 +9,8 @@ const postSchema = new mongoose.Schema({
   },
   
   avatar: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Image",
     required: true,
   },
   video:{

@@ -2,21 +2,7 @@
 
 const mongoose = require('mongoose');
 
-const ScoreCardSchema = new mongoose.Schema({
-    matchId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Match',
-        required: [true, "Enter matchId"]
-    }, 
-    userId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        required: [true, "Enter userId"]
-    },
-    matchVideo: {
-        type: String,
-        required: [true, "Enter match video link"],
-    },
+const ScoreCardSchema = new mongoose.Schema({ 
     team1Score:[
         {
             totalScore: {

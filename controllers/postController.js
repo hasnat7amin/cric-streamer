@@ -22,6 +22,7 @@ exports.getPosts = async (req, res) => {
     }
     const posts = await Post.find()
       .populate("user")
+      .populate("avatar")
       .populate({ path: "comments", populate: { path: "user" } })
       .populate({ path: "likes", populate: { path: "user" } })
       .sort({ date: -1 });
@@ -51,6 +52,7 @@ exports.getPostById = async (req, res) => {
     }
     const post = await Post.findById(req.params.id)
       .populate("user")
+      .populate("avatar")
       .populate({ path: "comments", populate: { path: "user" } })
       .populate({ path: "likes", populate: { path: "user" } })
       .sort({ date: -1 });
@@ -69,7 +71,7 @@ exports.getPostById = async (req, res) => {
 // @route   POST api/posts
 // @desc    Create post
 // @access  Private
-exports.createPost = async (req, res,next) => {
+exports.createPost = async (req, res) => {
   try {
     const validatedUser = await VerifyToken(req, res).then(async (user) => {
       if (!user) {
@@ -80,36 +82,31 @@ exports.createPost = async (req, res,next) => {
       }
       return user;
     });
-    if (!validatedUser) {
+
+    if (!req.body.text || !req.body.avatar) {
       return res.status(400).json({
         status: false,
-        message: "User not found",
+        message: "Post Text and Image is required",
       });
-    }
-    if(!req.body.text || !req.body.avatar  || req.body.user){
-      return res.status(400).json({
-        status: false,
-        message: "Post text, avatar and user are required",
+    } else {
+      console.log(validatedUser._id);
+      const post = new Post({
+        text: req.body.text,
+        avatar: req.body.avatar,
+        user: validatedUser._id,
       });
-    }
-    const user = validatedUser._id;
-    const { text, video } = req.body;
-    const avatar = req.file.path;
-
-    const newPost = new Post({
-      text,
-      avatar,
-      video,
-      user,
-    });
-
-    await newPost.save().then((post) => {
-      res.status(200).json({
+      await post.save();
+      return res.status(200).json({
         status: true,
-        data: post,
+        data: await Post.findById(post._id)
+          .populate("user")
+          .populate("user")
+          .populate("avatar")
+          .populate("likes")
+          .populate("comments"),
         message: "Post created successfully",
       });
-    });
+    }
   } catch (e) {
     res.status(400).json({
       status: false,
@@ -129,7 +126,7 @@ exports.updatePost = async (req, res) => {
           status: false,
           message: "User not found",
         });
-      } 
+      }
       return user;
     });
     if (!validatedUser) {
@@ -138,13 +135,15 @@ exports.updatePost = async (req, res) => {
         message: "User not found",
       });
     }
-    
+
     //const post = await Post.findByIdAndUpdate(req.params.id, req.body).where({ user: validatedUser._id });
-    await Post.findByIdAndUpdate(req.params.id, {
-      text: req.body.text,
-      avatar: req.file.path,
-    })
+    await Post.findByIdAndUpdate(req.params.id, req.body)
       .where({ user: validatedUser._id })
+      .populate("user")
+      .populate("avatar")
+      .populate("likes")
+      .populate("comments")
+
       .then(async (post) => {
         res.status(200).json({
           status: true,
@@ -220,7 +219,7 @@ exports.createComment = async (req, res) => {
     }
     const user = validatedUser._id;
     //console.log(user)
-    if(!req.body.text){
+    if (!req.body.text) {
       return res.status(400).json({
         status: false,
         message: "Comment text is required",
@@ -269,7 +268,7 @@ exports.createLike = async (req, res) => {
       });
     }
     const user = validatedUser._id;
-    if(!req.body.reaction){
+    if (!req.body.reaction) {
       return res.status(400).json({
         status: false,
         message: "Reaction is required",

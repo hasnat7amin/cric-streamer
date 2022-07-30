@@ -12,9 +12,9 @@ const youTubeStreamingSchema = new mongoose.Schema({
     type: Boolean,
     required: true,
   },
-  scoreCard:{
+  matchId:{
     type: mongoose.Schema.Types.ObjectId,
-    ref: "ScoreCard"
+    ref: "Match",
   },
   
   likes: [

@@ -12,11 +12,7 @@ const MatchSchema = new mongoose.Schema({
         ref: 'Team',
         required: [true, "Enter team2"]
     },
-    scoreCard:{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'ScoreCard',
-        required: [true, "Enter score card"]
-    },
+    
     location:{
         type: String,
         required: [true, "Enter location"]
