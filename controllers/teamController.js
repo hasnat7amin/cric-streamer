@@ -44,14 +44,14 @@ exports.getTeams = async (req, res) => {
         message: "User not found",
       });
     }
-    const teams = await Team.find({})
-      .populate("image")
-      .populate("logo")
-      .populate("players");
+
     return res.status(200).json({
       status: true,
       message: "Teams fetched successfully",
-      teams: teams,
+      teams: await Team.find({})
+        .populate("image")
+        .populate("logo")
+        .populate("players"),
     });
   } catch (err) {
     console.error(err.message);
@@ -72,10 +72,7 @@ exports.getTeamById = async (req, res) => {
         message: "User not found",
       });
     }
-    const team = await Team.findById(req.params.id)
-      .populate("image")
-      .populate("logo")
-      .populate("players");
+    const team = await Team.findById(req.params.id);
     if (!team) {
       return res.status(400).json({
         status: false,
@@ -85,7 +82,10 @@ exports.getTeamById = async (req, res) => {
     return res.status(200).json({
       status: true,
       message: "Team fetched successfully",
-      team: team,
+      team: await Team.findById(req.params.id)
+        .populate("image")
+        .populate("logo")
+        .populate("players"),
     });
   } catch (err) {
     return res.status(400).json({

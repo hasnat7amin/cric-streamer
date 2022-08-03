@@ -2,13 +2,7 @@ const Image = require("../models/UploadImage");
 
 exports.UploadImages = async (req, res, next) => {
   try {
-    if (!req.file) {
-      console.log("error to uploading images");
-      return res.status(400).json({
-        status: false,
-        message: "Image not found",
-      }); 
-    } else {
+    
      // console.log(req.file);
       console.log(req.body.text)
       const image = new Image({
@@ -22,7 +16,7 @@ exports.UploadImages = async (req, res, next) => {
         message: "Image uploaded successfully",
         image: image,
       });
-    } 
+    
   } catch (err) {
     return res.status(400).json({
       status: false,
