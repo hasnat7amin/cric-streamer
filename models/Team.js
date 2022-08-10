@@ -17,29 +17,45 @@ const TeamSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Image",
     },
-    teamOwner: {
+    city: {
       type: String,
-      // type: mongoose.Schema.Types.ObjectId,
-      // ref: 'User',
-      // required: [true, "Enter team owner"]
-    },
-    teamCaptain: {
-      type: String,
-      // type: mongoose.Schema.Types.ObjectId,
-      // ref: 'Player',
-      // required: [true, "Enter team captain"]
     },
     slogan: {
       type: String,
     },
     players: [
       {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Player",
+        _id: false,
+        id: {
+          type: mongoose.Schema.ObjectId,
+          ref: "Player",
+        },
+        isCaptain: {
+          type: Boolean,
+          default: false,
+        },
+        isPlayed:{
+          type: Boolean,
+          default: false,
+        },
+        onStrike: {
+          type: Boolean,
+          default: false,
+        },
+        isBatting: {
+          type: Boolean,
+          default: false,
+        },
+        isBowling: {
+          type: Boolean,
+          default: false,
+        },
       },
     ],
+    
     teamScoreList: [
       {
+        _id: false,
         matchId: {
           type: mongoose.Schema.Types.ObjectId,
           ref: "Match",
@@ -48,20 +64,35 @@ const TeamSchema = new mongoose.Schema(
           type: Number,
           default: 0,
         },
-        overs: {
+        out: {
           type: Number,
           default: 0,
         },
-        wickets: {
+        extra: {
           type: Number,
           default: 0,
         },
+        overs: [
+          [ // no of overs
+            { // per ball
+              _id: false,
+              score: {
+                type: Number,
+                default: 0,
+              },
+              text: {
+                type: String,
+                default: "",
+              }
+            }
+          ]
+        ],
       },
     ],
-    rating: {
-      type: Number,
-      default: 0,
-    },
+    // rating: {
+    //   type: Number,
+    //   default: 0,
+    // },
     createdAt: {
       type: Date,
       default: Date.now,

@@ -15,8 +15,9 @@ const PlayerSchema = new mongoose.Schema(
       type: String,
       required: [true, "Enter player role"],
     },
-    playerScoreList: [
+    playerBattingScore: [
       {
+        _id: false,
         matchId: {
           type: mongoose.Schema.Types.ObjectId,
           ref: "Match",
@@ -25,15 +26,28 @@ const PlayerSchema = new mongoose.Schema(
           type: mongoose.Schema.Types.ObjectId,
           ref: "Team",
         },
-        playedTotalScore: {
+        playerTotalScore: {
           type: Number,
           default: 0,
         },
-        bolledTotalScore: {
+        playerTotalBall:{
           type: Number,
           default: 0,
         },
-        overs: {
+      },
+    ],
+    playerBowlingScore: [
+      {
+        _id: false,
+        matchId: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Match",
+        },
+        teamId: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Team",
+        },
+        score: {
           type: Number,
           default: 0,
         },
@@ -41,15 +55,20 @@ const PlayerSchema = new mongoose.Schema(
           type: Number,
           default: 0,
         },
-      },
+        overs: {
+          type: Number,
+          default: 0,
+        },
+      }
     ],
-    city: {
-      type: String,
-    },
-    rating: {
-      type: Number,
-      default: 0,
-    },
+    
+    // city: {
+    //   type: String,
+    // },
+    // rating: {
+    //   type: Number,
+    //   default: 0,
+    // },
     createdAt: {
       type: Date,
       default: Date.now,

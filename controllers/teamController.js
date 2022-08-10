@@ -51,7 +51,7 @@ exports.getTeams = async (req, res) => {
       teams: await Team.find({})
         .populate("image")
         .populate("logo")
-        .populate("players"),
+        .populate("players.id"),
     });
   } catch (err) {
     console.error(err.message);
@@ -85,7 +85,7 @@ exports.getTeamById = async (req, res) => {
       team: await Team.findById(req.params.id)
         .populate("image")
         .populate("logo")
-        .populate("players"),
+        .populate("players.id"),
     });
   } catch (err) {
     return res.status(400).json({
@@ -124,7 +124,7 @@ exports.updateTeamById = async (req, res) => {
       team: await Team.findById(updatedTeam._id)
         .populate("image")
         .populate("logo")
-        .populate("players"),
+        .populate("players.id"),
     });
   } catch (err) {
     return res.status(400).json({
@@ -169,15 +169,14 @@ exports.createTeam = async (req, res) => {
         message: "Team name and image is required",
       });
     }
-    const newTeam = new Team(req.body);
-    const team = await newTeam.save();
+    const newTeam = await Team.create(req.body);
     return res.status(200).json({
       status: true,
       message: "Team created successfully",
-      team: await Team.findById(team._id)
+      team: await Team.findById(newTeam._id)
         .populate("image")
         .populate("logo")
-        .populate("players"),
+        .populate("players.id"),
     });
   } catch (err) {
     return res.status(400).json({
@@ -231,14 +230,14 @@ exports.deleteAllTeams = async (req, res) => {
       .then(() => {
         return res.status(200).json({
           status: true,
-          message: "Players deleted successfully",
+          message: "All Teams  deleted successfully",
         });
       })
       .catch((err) => {
         return res.status(400).json({
           status: false,
           error: err,
-          message: "Players not deleted successfully",
+          message: "All Teams not deleted successfully",
         });
       });
   } catch (err) {
