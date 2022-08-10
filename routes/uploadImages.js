@@ -32,9 +32,9 @@ const  upload = multer({
   limits: {
     fileSize: 1024 * 1024 * 1,
   },
-}).single("image");
+});
 
 
-router.route("/image").post(upload, UploadImages);
+router.route("/image").post(upload.single("image"), UploadImages);
 
 module.exports = router;
