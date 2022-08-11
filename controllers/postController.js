@@ -8,6 +8,7 @@ const Team = require("../models/Team");
 const Match = require("../models/Match");
 const ScoreCard = require("../models/ScoreCard");
 const VerifyToken = require("../validation/verifyToken");
+ 
 // @route   GET api/posts
 // @desc    Get all posts
 // @access  Private

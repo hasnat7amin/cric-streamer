@@ -20,7 +20,7 @@ mongoose.connect(process.env.DB_CONNECTION, {
   useUnifiedTopology: true,
 });
 
-// djaskf
+
 mongoose.connection.on("connected", () => {
   console.log("Connected to database");
 });
