@@ -215,7 +215,7 @@ exports.deleteTeamById = async (req, res) => {
   } catch (err) {
     return res.status(400).json({
       status: false,
-      message: "User not found",
+      message: err.message,
     });
   }
 };
@@ -247,3 +247,52 @@ exports.deleteAllTeams = async (req, res) => {
     });
   }
 };
+
+// create the controller for changing the captain
+// @route PUT api/team/:teamId/changeCaptain
+// @desc update captain
+// @access Private
+exports.changeCaptain = async (req, res) => {
+  try {
+    const validatedUser = VerifyToken(req, res);
+    if (!validatedUser) {
+      return res.status(400).json({
+        status: false,
+        message: "User not found",
+      });
+    }
+
+    if (!req.body.newCaptain || !req.body.previousCaptain) {
+      return res.status(400).json({
+        status: false,
+        message: "please enter new and previous captain",
+      });
+    }
+
+    const team = await Team.findById(req.params.teamId);
+    for (let player of team.players) {
+      if (player.id == req.body.newCaptain) {
+        player.isCaptain = true;
+      }
+      if (player.id == req.body.previousCaptain) {
+        player.isCaptain = false;
+      }
+    }
+
+    await team.save();
+    return res.status(200).json({
+      status: true,
+      message: await Team.findById(req.params.teamId)
+        .populate("image")
+        .populate("logo")
+        .populate("players.id") 
+    });
+
+
+  } catch (e) {
+    return res.status(400).json({
+      status: false,
+      message: e.message,
+    });
+  }
+}

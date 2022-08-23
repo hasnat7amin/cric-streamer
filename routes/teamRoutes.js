@@ -37,7 +37,8 @@ const {
     createTeam,
     updateTeamById,
     deleteTeamById,
-    deleteAllTeams
+    deleteAllTeams,
+    changeCaptain
 
 } = require("../controllers/teamController")
 
@@ -47,6 +48,7 @@ router.route("/:id").get(getTeamById);
 router.route("/:id").put(updateTeamById);
 router.route("/:id").delete(deleteTeamById);
 router.route("/").delete(deleteAllTeams);
+router.route("/:teamId/changeCaptain").put(changeCaptain)
 
 
 module.exports = router;
