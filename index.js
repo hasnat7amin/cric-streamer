@@ -28,9 +28,9 @@ mongoose.connection.on("connected", () => {
 app.use("/api/user", userRouter);
 app.use("/api/posts", postRouter);
 app.use("/api/player", playerRouter);
-app.use("/api/match", matchRouter);
-app.use("/api/scoreCard", scoreCardRouter);
-app.use("/api/team", teamRouter);
+app.use("/api/match", matchRouter); // show player name
+app.use("/api/scoreCard", scoreCardRouter); // show player name
+app.use("/api/team", teamRouter); // show player name
 app.use("/api/youtube", YouTubeRouter);
 app.use("/api/upload", UploadImages);
 

@@ -55,16 +55,14 @@ exports.getMatchById = async (req, res) => {
       status: true,
       message: "Match fetched successfully",
       match: await Match.findById(req.params.id)
-        .populate("team1.id")
-        .populate("team2.id")
         .populate({
-          path: "team1",
-          populate: { path: "players", populate: "id" },
+          path: "team1.id",
+          populate: { path: "players", populate: "id",select:"name" },
         })
         .populate({
-          path: "team2",
-          populate: { path: "players", populate: "id" },
-        }),
+          path: "team2.id",
+          populate: { path: "players", populate: "id",select:"name" },
+        })
     });
   } catch (err) {
     res.status(500).json({
