@@ -9,7 +9,7 @@ const _ = require("lodash");
 var messagebird = require("messagebird")(process.env.MESSAGE_API_KEY);
 let transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
-  port: 587,
+  port: 465,
   secure: false,
   auth: {
     user: process.env.EMAIL, // TODO: your gmail account
@@ -221,7 +221,7 @@ module.exports.sendOTP = async (req, res) => {
             .save()
             .then(async (response) => {
               let mailOptions = {
-                from: "hasnatamin708@gmail.com", // TODO: email sender
+                from: process.env.EMAIL, // TODO: email sender
                 to: user.email, // TODO: email receiver
                 subject: "Your OTP",
                 text: `Hi ${user.name}, \n Welcome to Cric Streamer! \n Your OTP is ${randomNumber}`,
