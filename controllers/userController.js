@@ -165,7 +165,7 @@ module.exports.login = async (req, res) => {
         res.header("auth-token", token).json({
           status: true,
           token: token,
-          user: user,
+          data: user,
           message: "user logged in successfully",
         });
         //res.status(200).send(user);
