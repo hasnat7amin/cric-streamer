@@ -283,7 +283,7 @@ module.exports.changePassword = async (req, res) => {
       .then(async (user) => {
         res.status(200).json({
           status: true,
-          data: await User.findById(userId),
+          data: await User.findById(user._id),
           message: "Password changed successfully",
         });
       })
