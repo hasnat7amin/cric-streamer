@@ -10,7 +10,7 @@ var messagebird = require("messagebird")(process.env.MESSAGE_API_KEY);
 let transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
   port: 465,
-  secure: false,
+  service: "gmail",
   auth: {
     user: process.env.EMAIL, // TODO: your gmail account
     pass: process.env.PASSWORD, // TODO: your gmail password
@@ -211,11 +211,12 @@ module.exports.sendOTP = async (req, res) => {
     })
       .then(async (user) => {
         if (user) {
+          console.log(user);
           const randomNumber = Math.floor(100000 + Math.random() * 900000);
 
           const otp = new OTP({
             otp: randomNumber,
-            userId: req.body.id,
+            userId: user._id,
           });
           otp
             .save()
