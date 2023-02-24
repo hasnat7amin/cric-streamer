@@ -29,7 +29,7 @@ module.exports.signUp = async (req, res) => {
     }
     User.findOne({
       email: req.body.email,
-    })
+    }).select('name email phoneNo password verified')
       .then(async (user) => {
         if (user)
           return res.status(400).json({
@@ -83,7 +83,7 @@ module.exports.verifyOTP = async (req, res) => {
       .then(async (user) => {
         res.status(200).json({
           status: true,
-          data: await User.findById(userId),
+          data: await User.findById(userId).select('name email phoneNo password verified'),
           message: "User verified successfully",
         });
       })
@@ -146,7 +146,7 @@ module.exports.login = async (req, res) => {
     const password = req.body.password;
     await User.findOne({
       email: email,
-    })
+    }).select('name email phoneNo password verified')
       .then(async (user) => {
         if (!user)
           return res.status(400).json({
@@ -209,7 +209,7 @@ module.exports.sendOTP = async (req, res) => {
   try {
     await User.findOne({
       email: req.body.email,
-    })
+    }).select('name email phoneNo password verified')
       .then(async (user) => {
         if (user) {
           console.log(user);
@@ -284,7 +284,7 @@ module.exports.changePassword = async (req, res) => {
       .then(async (user) => {
         res.status(200).json({
           status: true,
-          data: await User.findById(user._id),
+          data: await User.findById(user._id).select('name email phoneNo password verified'),
           message: "Password changed successfully",
         });
       })
@@ -313,7 +313,7 @@ module.exports.verifyEmail = async (req, res) => {
       })
     }
     const email = req.body.email;
-    await User.findOne({ email: email })
+    await User.findOne({ email: email }).select('name email phoneNo password verified')
       .then(async (user) => {
         if (user) {
           res.status(200).json({
@@ -355,7 +355,7 @@ module.exports.resetPassword = async (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
     const genPassword = await bcrypt.hash(password, 10);
-    await User.findOneAndUpdate({ email: email }, { password: genPassword })
+    await User.findOneAndUpdate({ email: email }, { password: genPassword }).select('name email phoneNo password verified')
       .then(async (user) => {
         if (user) {
           res.status(200).json({
