@@ -206,7 +206,7 @@ module.exports.deleteAll = async (req, res) => {
 // /api/user/sendOTP
 module.exports.sendOTP = async (req, res) => {
   try {
-    User.findOne({
+    await User.findOne({
       email: req.body.email,
     })
       .then(async (user) => {
