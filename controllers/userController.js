@@ -1,12 +1,8 @@
 const bcrypt = require("bcrypt");
 const nodemailer = require("nodemailer");
 const jwt = require("jsonwebtoken");
-const otpGenerator = require("otp-generator");
-const axios = require("axios");
 const User = require("../models/User");
 const OTP = require("../models/OTP");
-const _ = require("lodash");
-var messagebird = require("messagebird")(process.env.MESSAGE_API_KEY);
 let transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
   port: 465,
