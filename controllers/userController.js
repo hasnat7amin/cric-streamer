@@ -79,7 +79,15 @@ module.exports.verifyOTP = async (req, res) => {
     const userId = req.body.userId;
     const otp = req.body.otp;
 
-    await User.findByIdAndUpdate(userId, { verified: true })
+    let otpfind =  await OTP.findOne({
+      userId: userId,
+      otp: otp,
+    })
+    if(!otpfind){
+      throw new Error("opt not found");
+    }
+    else{
+      await User.findByIdAndUpdate(userId, { verified: true })
       .then(async (user) => {
         res.status(200).json({
           status: true,
@@ -93,6 +101,7 @@ module.exports.verifyOTP = async (req, res) => {
           message: err,
         });
       });
+    }
     // await OTP.findOne({
     //   userId: userId,
     //   otp: otp,

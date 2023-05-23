@@ -1,7 +1,8 @@
 
 const router = require("express").Router();
 const multer = require("multer");
-const { UploadImages } = require("../controllers/uploadImageController");
+const { UploadImage,UploadImages } = require("../controllers/uploadImageController");
+const VerifyToken = require("../validation/verifyToken");
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -35,6 +36,6 @@ const  upload = multer({
 });
 
 
-router.route("/image").post(upload.single("image"), UploadImages);
-
-module.exports = router;
+router.route("/image").post(upload.single("image"), UploadImage);
+router.route("/images").post(upload.array("image"), UploadImages);
+ module.exports = router;

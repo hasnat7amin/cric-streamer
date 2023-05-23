@@ -30,6 +30,8 @@
     "nodemon": "^2.0.15",
     "otp-generator": "^4.0.0",
     "serverless-http": "^2.7.0",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^4.6.3",
     "xhr2": "^0.2.1"
   }
 }

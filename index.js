@@ -25,6 +25,15 @@ mongoose.connection.on("connected", () => {
   console.log("Connected to database");
 });
 
+const swaggerUi = require('swagger-ui-express')
+swaggerDocument = require('./swagger.json');
+
+app.use(
+  '/api-docs',
+  swaggerUi.serve, 
+  swaggerUi.setup(swaggerDocument)
+);  
+
 app.use("/api/user", userRouter);
 app.use("/api/posts", postRouter);
 app.use("/api/player", playerRouter);
