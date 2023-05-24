@@ -9,7 +9,7 @@
       "url": "https://opensource.org/licenses/MIT"
     }
   },
-  "host": "cric-streamer.cyclic.app",
+  "host": "localhost:5000",
   "servers": [
     {
       "url": "cric-streamer.cyclic.app"

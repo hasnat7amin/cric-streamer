@@ -1,3 +1,4 @@
+const addImage = require("../constants/addImage");
 const Image = require("../models/UploadImage");
 const VerifyToken = require("../validation/verifyToken");
 
@@ -10,14 +11,9 @@ exports.UploadImage = async (req, res, next) => {
         message: "User not found",
       });
     }
-     // console.log(req.file);
-      // console.log(req.body.text)
-      const image = new Image({
-        imageUrl: "https://cric-streamer.cyclic.app/"+ req.file.path,
-        imageName: req.file.filename,
-      });
-      await image.save();
-      console.log(image)
+     
+      const image  = await addImage(req.file)
+      
       return res.status(200).json({
         status: true,
         message: "Image uploaded successfully",
@@ -45,7 +41,8 @@ exports.UploadImages = async (req, res, next) => {
     }
      let files = [];
      for(let file of req.files) {
-      files.push("https://cric-streamer.cyclic.app/"+file.path);
+      const image  = await addImage(req.file)
+      files.push(image);
      }
 
      
