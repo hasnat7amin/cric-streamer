@@ -15,6 +15,7 @@ const app = express();
 app.use("/uploads", express.static("uploads"));
 app.use(express.json());
 
+mongoose.set('strictQuery', true);
 mongoose.connect(process.env.DB_CONNECTION, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
