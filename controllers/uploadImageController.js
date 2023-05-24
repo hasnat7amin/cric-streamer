@@ -41,7 +41,7 @@ exports.UploadImages = async (req, res, next) => {
     }
      let files = [];
      for(let file of req.files) {
-      const image  = await addImage(req.file)
+      const image  = await addImage(file)
       files.push(image);
      }
 
