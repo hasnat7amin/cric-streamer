@@ -9,13 +9,12 @@ const TeamSchema = new mongoose.Schema(
       required: [true, "Enter team name"],
     },
     image: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Image",
+      type: String,
       required: [true, "Enter team image"],
     },
     logo: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Image",
+      type: String,
+      required: [true, "Enter team logo"],
     },
     city: {
       type: String,

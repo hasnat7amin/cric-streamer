@@ -12,15 +12,18 @@ const commentPostSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    // videoUrl:{
-    //     type: String,
-    //     required: false,
-    // },
-    
-    // avatar: {
-    //     type: String,
-    //     required: false,
-    // },
+    likes:[
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Like",
+        }
+    ],
+    replies:[
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "CommentPost",
+        }
+    ],
     date: {
         type: Date,
         default: Date.now,

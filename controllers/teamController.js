@@ -1,6 +1,7 @@
 const VerifyToken = require("../validation/verifyToken");
 const Team = require("../models/Team");
 const multer = require("multer");
+const addImage = require("../constants/addImage");
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -140,8 +141,10 @@ exports.updateTeamById = async (req, res) => {
 // @access Private
 exports.createTeam = async (req, res) => {
   try {
+    // console.log(req.files)
     const validatedUser = await VerifyToken(req, res);
-    //console.log("validatedUser",validatedUser);
+    //console.log("validatedUser",validatedUser); 
+
     if (!validatedUser) {
       return res.status(400).json({
         status: false,
@@ -163,13 +166,16 @@ exports.createTeam = async (req, res) => {
         team: isExitsTeam,
       });
     }
-    if (!req.body.name || !req.body.image) {
-      return res.status(400).json({
-        status: false,
-        message: "Team name and image is required",
-      });
-    }
-    const newTeam = await Team.create(req.body);
+    let files = [];
+      for (let file of req.files) {
+        const image = await addImage(file);
+        files.push(image);
+      }
+    const newTeam = await Team.create({
+      name: req.body.name,
+      image: files[0],
+      logo: files[1],
+    });
     return res.status(200).json({
       status: true,
       message: "Team created successfully",
